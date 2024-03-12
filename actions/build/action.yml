@@ -42,8 +42,17 @@ inputs:
     required: false
     default: '12.0'
 
+  run_path:
+    description: Optional path to the location where Conveyor will be run.
+    type: string
+    required: false
+    default: '.'
+
 runs:
   using: composite
+  defaults:
+    run:
+      working-directory: ${{ inputs.run_path }}
   steps:
     # Workaround to https://github.com/actions/runner/issues/1070
     - name: Check inputs
