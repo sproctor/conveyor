@@ -31,7 +31,7 @@ inputs:
     default: 'conveyor'
 
   cache_path:
-    description: Optional path to the location where Conveyor will be installed and keep the task cache.
+    description: Optional path to the location where Conveyor will be installed and keep the task cache. (Must be an absolute path if 'run_path' is specified.)
     type: string
     required: false
     default: '.conveyor'
@@ -50,9 +50,6 @@ inputs:
 
 runs:
   using: composite
-  defaults:
-    run:
-      working-directory: ${{ inputs.run_path }}
   steps:
     # Workaround to https://github.com/actions/runner/issues/1070
     - name: Check inputs
@@ -100,6 +97,7 @@ runs:
         SIGNING_KEY: ${{ inputs.signing_key }}
         CONVEYOR_AGREE_TO_LICENSE: ${{ inputs.agree_to_license }}
       shell: bash
+      working-directory: inputs.run_path
       run: |
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
         conveyor --cache-dir="${{ inputs.cache_path }}/cache" "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
