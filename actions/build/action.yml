@@ -97,7 +97,7 @@ runs:
         SIGNING_KEY: ${{ inputs.signing_key }}
         CONVEYOR_AGREE_TO_LICENSE: ${{ inputs.agree_to_license }}
       shell: bash
-      working-directory: inputs.run_path
+      working-directory: ${{ inputs.run_path }}
       run: |
         PATH="$PATH:${{ inputs.cache_path }}/install/conveyor-${{ inputs.conveyor_version }}/bin"
         conveyor --cache-dir="${{ inputs.cache_path }}/cache" "-Kapp.signing-key=$SIGNING_KEY" ${{ inputs.extra_flags }} ${{ inputs.command }}
